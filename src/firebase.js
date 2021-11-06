@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useEffect } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 
@@ -23,27 +23,4 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig)
-const database = firebase.database()
-export const DataRef = (name) => {
-    const [Data, setData] = useState([])
-    database.ref(name).orderByKey().limitToLast(10).on("value", (snapshot) => {
-        const Data = snapshot.val()
-        if (Data === null) return
-        const entries = Object.entries(Data)
-        const newData = entries.map((data) => {
-            const [detail, skill] = data
-            return { detail, ...skill }
-        })
-        setData(newData)
-    });
-    console.log(Data)
-    return Data;
-}
-//export const messagesRef = database.ref('messages')
-export const setAchievement = () => {
-    console.log("aaa")
-    const achieveRef = database.ref("UserA/test")
-    achieveRef.update("aaaa");
-    //   messagesRef.push({ name, text })
-    console.log("bbb")
-}
+export const database = firebase.database()

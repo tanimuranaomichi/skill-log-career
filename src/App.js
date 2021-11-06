@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -13,8 +14,8 @@ import Home from './screens/home';
 import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
 //import { DataRef, setAchievement } from './firebase';
-import Button from '@mui/material/Button';
-import { setAchievement } from './firebase';
+import { database } from './firebase';
+
 
 const theme = createTheme({
   palette: {
@@ -28,6 +29,38 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const [skill, setSkill] = useState([])
+  //const [data_key, setData_key] = useState([])
+  const DataRef = (name) => {
+    return new Promise((resolve, reject) => {
+      if (name !== "") {
+        database.ref(name).orderByKey().limitToLast(10).on("value", (snapshot) => {
+          const messages = snapshot.val()
+          if (messages === null) return
+          const entries = Object.entries(messages)
+          const newMessages = entries.map((data) => {
+            const [key, message] = data
+            return { key, ...message }
+          })
+          //setSkill(newMessages)
+          //console.log(newMessages[1])
+          //setData_key(Object.keys(newMessages[1]))
+          resolve(newMessages);
+        })
+      }
+      else {
+        reject();
+      }
+    });
+  };
+  async function asyncDataRef(name) {
+    var tempData = await DataRef(name);
+    //console.log(tempData);
+    setSkill(tempData);
+    return tempData;
+    //return tempData;
+  };
+
   return (
     <>
       <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
@@ -48,8 +81,7 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Button variant="contained" onClick={setAchievement()}>Contained</Button>
-      {/* {DataRef("UserA")} */}
+      <Button variant="outlined" onClick={async () => { var data = await asyncDataRef("UserA"); console.log(data); console.log(data[1].a) }}>button</Button>
       <BrowserRouter>
         <Switch>
           <Route path='/login' component={Login} />
