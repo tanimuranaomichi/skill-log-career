@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
+import 'firebase/compat/auth';
 
 const {
     REACT_APP_FIREBASE_API_KEY,
@@ -28,3 +29,5 @@ export const messagesRef = database.ref('UserA/achievement')
 export const pushAchievement = ({ date, eventName, result }) => {
     messagesRef.push({ date, eventName, result })
 }
+
+export const auth = firebase.auth();

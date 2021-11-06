@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -9,6 +9,20 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { MenuItem } from '@mui/material';
+import { auth } from "../firebase"
+
+const getStringFromDate = (date) => {
+    let year_str = date.getFullYear();
+    let month_str = 1 + date.getMonth();
+    let day_str = date.getDate();
+
+    let format_str = 'YYYY-MM-DD';
+    format_str = format_str.replace(/YYYY/g, year_str);
+    format_str = format_str.replace(/MM/g, month_str);
+    format_str = format_str.replace(/DD/g, day_str);
+
+    return format_str;
+}
 
 const grades = [
     {
@@ -30,22 +44,12 @@ const grades = [
 ];
 
 export default function SignUp() {
-
+    const [lastName, setLastName] = useState();
+    const [firstName, setFirstName] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
     const [grade, setGrade] = React.useState('B1');
-
-    const handleChange = (event) => {
-        setGrade(event.target.value);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    const registrationDate = new Date();
 
     return (
         <Container component="main" maxWidth="xs">
@@ -63,8 +67,20 @@ export default function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Box component="form" noValidate>
                     <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="lastName"
+                                label="姓"
+                                name="lastName"
+                                autoComplete="family-name"
+                                autoFocus
+                                onChange={(e) => setLastName((lastName) => (lastName = e.target.value))}
+                            />
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="given-name"
@@ -72,18 +88,8 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="firstName"
-                                label="First Name"
-                                autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="family-name"
+                                label="名"
+                                onChange={(e) => setFirstName((firstName) => (firstName = e.target.value))}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -91,9 +97,10 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="メールアドレス"
                                 name="email"
                                 autoComplete="email"
+                                onChange={(e) => setEmail((email) => (email = e.target.value))}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -101,10 +108,11 @@ export default function SignUp() {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label="パスワード"
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
+                                onChange={(e) => setPassword((password) => (password = e.target.value))}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -114,7 +122,7 @@ export default function SignUp() {
                                 select
                                 label="Select"
                                 value={grade}
-                                onChange={handleChange}
+                                onChange={(e) => setGrade((grade) => (grade = e.target.value))}
                             >
                                 {grades.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -129,6 +137,10 @@ export default function SignUp() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            auth.createUserWithEmailAndPassword(email, password)
+                        }}
                     >
                         Sign Up
                     </Button>
@@ -140,6 +152,6 @@ export default function SignUp() {
 
                 </Box>
             </Box>
-        </Container>
+        </Container >
     );
 }
