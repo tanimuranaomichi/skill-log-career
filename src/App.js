@@ -12,7 +12,9 @@ import { GlobalStyles } from '@mui/material';
 import Home from './screens/home';
 import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
-import { DataRef } from './firebase';
+//import { DataRef, setAchievement } from './firebase';
+import Button from '@mui/material/Button';
+import { setAchievement } from './firebase';
 
 const theme = createTheme({
   palette: {
@@ -46,7 +48,8 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      {DataRef("UserA")}
+      <Button variant="contained" onClick={setAchievement()}>Contained</Button>
+      {/* {DataRef("UserA")} */}
       <BrowserRouter>
         <Switch>
           <Route path='/login' component={Login} />

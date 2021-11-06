@@ -40,6 +40,10 @@ export const DataRef = (name) => {
     return Data;
 }
 //export const messagesRef = database.ref('messages')
-// export const pushMessage = ({ name, text }) => {
-//   messagesRef.push({ name, text })
-// }
+export const setAchievement = () => {
+    console.log("aaa")
+    const achieveRef = database.ref("UserA/test")
+    achieveRef.update("aaaa");
+    //   messagesRef.push({ name, text })
+    console.log("bbb")
+}
