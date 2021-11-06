@@ -25,6 +25,6 @@ firebase.initializeApp(firebaseConfig)
 const database = firebase.database()
 export const messagesRef = database.ref('UserA/achievement')
 
-export const pushAchievement = ({ eventName, result }) => {
-    messagesRef.push({ eventName, result })
+export const pushAchievement = ({ date, eventName, result }) => {
+    messagesRef.push({ date, eventName, result })
 }
