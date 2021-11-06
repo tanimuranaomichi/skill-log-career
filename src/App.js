@@ -46,9 +46,6 @@ const App = () => {
             const [key, message] = data
             return { key, ...message }
           })
-          //setSkill(newMessages)
-          //console.log(newMessages[1])
-          //setData_key(Object.keys(newMessages[1]))
           resolve(newMessages);
         })
       }
@@ -59,12 +56,12 @@ const App = () => {
   };
   async function asyncDataRef(name) {
     var tempData = await DataRef(name);
-    //console.log(tempData);
+    console.log(tempData);
     setSkill(tempData);
     return tempData;
     //return tempData;
   };
-  
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -94,9 +91,7 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-
-      <Button variant="outlined" onClick={async () => { var data = await asyncDataRef("UserA"); console.log(data); console.log(data[1].a) }}>button</Button>
-
+      <Button variant="outlined" onClick={async () => { var data = await asyncDataRef("UserA/skill-data"); console.log(data); console.log(data[1].skill) }}>button</Button>
       <Drawer
         sx={{
           width: 240,
