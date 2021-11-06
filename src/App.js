@@ -11,6 +11,7 @@ import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
 import { database } from './firebase';
 import Archivement from './screens/achievement';
+import Signup from './screens/signup';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -64,7 +65,7 @@ const App = () => {
     return tempData;
     //return tempData;
   };
-  
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -133,6 +134,7 @@ const App = () => {
       </Drawer>
       <BrowserRouter>
         <Switch>
+          <Route path='/signup' component={Signup} />
           <Route path='/login' component={Login} />
           <Route path='/questionnaire' component={Questionnaire} />
           <Route path='/achievement' component={Archivement} />
