@@ -12,7 +12,6 @@ import { GlobalStyles } from '@mui/material';
 import Home from './screens/home';
 import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
-import { DataRef } from './firebase';
 
 const theme = createTheme({
   palette: {
@@ -46,7 +45,6 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      {DataRef("UserA")}
       <BrowserRouter>
         <Switch>
           <Route path='/login' component={Login} />
