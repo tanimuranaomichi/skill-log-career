@@ -2,10 +2,10 @@
 import React from 'react';
 import './login.css'
 
-const Home = () => {
+const Login = () => {
     return (
         <h1>ログイン</h1> // 消してください by谷村
     );
 }
 
-export default Home;
+export default Login;
