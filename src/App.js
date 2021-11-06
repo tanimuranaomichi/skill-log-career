@@ -1,19 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-
-import Typography from '@mui/material/Typography';
-import { ThemeProvider, Drawer } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, ThemeProvider, Drawer } from '@mui/material';
+import { GlobalStyles } from '@mui/material';
+import { List, ListItemButton, ListItemText } from '@mui/material';
+import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon } from '@mui/icons-material';
 import { createTheme, styled } from '@mui/material/styles';
 import { blue, green } from '@mui/material/colors';
-import { GlobalStyles } from '@mui/material';
 import Home from './screens/home';
 import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
