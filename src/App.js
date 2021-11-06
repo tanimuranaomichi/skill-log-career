@@ -65,7 +65,6 @@ const App = () => {
         <div key={d.detail}>
         </div>
       ))}
-
       <BrowserRouter>
         <Switch>
           <Route path='/login' component={Login} />
@@ -73,10 +72,8 @@ const App = () => {
           <Route path='/' component={Home} />
         </Switch>
       </BrowserRouter>
-
     </>
   );
-
 }
 
 export default App;
