@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,21 +26,6 @@ const theme = createTheme({
 });
 
 const App = () => {
-  const [Data, setData] = useState([])
-
-  useEffect(() => {
-    DataRef("UserA").orderByKey().limitToLast(10).on("value", (snapshot) => {
-      const Data = snapshot.val()
-      if (Data === null) return
-      const entries = Object.entries(Data)
-      const newData = entries.map((data) => {
-        const [detail, skill] = data
-        return { detail, ...skill }
-      })
-      setData(newData)
-      console.log(newData);
-    })
-  }, [])
   return (
     <>
       <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
@@ -61,10 +46,7 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      {Data.map((d) => (
-        <div key={d.detail}>
-        </div>
-      ))}
+      {DataRef("UserA")}
       <BrowserRouter>
         <Switch>
           <Route path='/login' component={Login} />
