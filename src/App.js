@@ -12,6 +12,7 @@ import { GlobalStyles } from '@mui/material';
 import Home from './screens/home';
 import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
+import Archivement from './screens/achievement';
 
 const theme = createTheme({
   palette: {
@@ -49,6 +50,7 @@ const App = () => {
         <Switch>
           <Route path='/login' component={Login} />
           <Route path='/questionnaire' component={Questionnaire} />
+          <Route path='/achievement' component={Archivement} />
           <Route path='/' component={Home} />
         </Switch>
       </BrowserRouter>
