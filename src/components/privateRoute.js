@@ -1,15 +1,15 @@
 import { Route, Redirect } from 'react-router-dom';
 import { useAuthContext } from '../context/authContext';
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component, exact, path }) => {
     const { user } = useAuthContext();
-    return (
-        <Route
-            {...rest}
-            render={(routeProps) => {
-                return user ? <Component {...routeProps} /> : <Redirect to="/login" />;
-            }}
-        />
-    );
+    console.log(user);
+    if (user) {
+        console.log("成功");
+        return <Route exact={exact} path={path} component={component} />;
+    } else {
+        console.log(user);
+        return <Redirect to="/login" />;
+    }
 };
 
 export default PrivateRoute;

@@ -13,6 +13,7 @@ import { auth, database } from './firebase';
 import Archivement from './screens/achievement';
 import Signup from './screens/signup';
 import { AuthProvider } from './context/authContext';
+import PrivateRoute from './components/privateRoute';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -144,9 +145,9 @@ const App = () => {
           <Switch>
             <Route path='/signup' component={Signup} />
             <Route path='/login' component={Login} />
-            <Route path='/questionnaire' component={Questionnaire} />
-            <Route path='/achievement' component={Archivement} />
-            <Route path='/' component={Home} />
+            <PrivateRoute path='/questionnaire' component={Questionnaire} />
+            <PrivateRoute path='/achievement' component={Archivement} />
+            <PrivateRoute path='/' component={Home} />
           </Switch>
         </BrowserRouter>
       </AuthProvider>
