@@ -88,10 +88,10 @@ const data = [
                     value: "日時", offset: -5, position: "insideBottomRight"
                 }}
             />
-            < YAxis label={{ value: "気温（℃）", angle: -90, position: "insideLeft" }} />
+            < YAxis label={{ value: "スキル", angle: -90, position: "insideLeft" }} />
             <Tooltip />
             <Legend verticalAlign="bottom" />
-            <Line type="monotone" dataKey="val" name="東京" stroke="#8884d8" dot={false} />
+            <Line type="monotone" dataKey="val" name="ユーザ１" stroke="#8884d8" dot={false} />
         </LineChart>
     );
 }
