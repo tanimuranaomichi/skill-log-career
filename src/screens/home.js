@@ -1,116 +1,118 @@
 // グラフ画面
 import React,{useState, useEffect} from 'react';
 import './home.css'
-import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} from 'recharts';
-import moment from 'moment';
-import { database } from '../firebase';
+import { Chart } from 'chart.js';
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-const data = [
-    { time: "2020-10-29T00:39:11.934Z", val: 7 },
-    { time: "2020-10-29T00:32:39.686Z", val: 10 },
-    { time: "2020-10-29T00:19:21.722Z", val: 14 },
-    { time: "2020-10-29T00:59:30.532Z", val: 19 },
-    { time: "2020-10-29T00:21:05.784Z", val: 23 },
-    { time: "2020-10-29T00:27:09.031Z", val: 25 },
-    { time: "2020-10-29T00:24:10.445Z", val: 15 },
-    { time: "2020-10-29T00:52:54.226Z", val: 22 },
-    { time: "2020-10-29T00:15:53.244Z", val: 9 },
-    { time: "2020-10-29T00:35:21.302Z", val: 5 },
-    { time: "2020-10-29T00:34:53.843Z", val: 23 },
-    { time: "2020-10-29T00:41:40.703Z", val: 24 },
-    { time: "2020-10-29T00:32:38.129Z", val: 19 },
-    { time: "2020-10-29T00:58:48.600Z", val: 17 },
-    { time: "2020-10-29T00:04:32.791Z", val: 11 },
-    { time: "2020-10-29T00:25:51.704Z", val: 20 },
-    { time: "2020-10-29T00:58:59.329Z", val: 24 },
-    { time: "2020-10-29T00:05:34.037Z", val: 25 },
-    { time: "2020-10-29T00:51:06.128Z", val: 13 },
-    { time: "2020-10-29T00:37:17.627Z", val: 8 },
-    { time: "2020-10-29T00:02:40.281Z", val: 9 },
-    { time: "2020-10-29T00:32:17.279Z", val: 23 },
-    { time: "2020-10-29T00:04:06.762Z", val: 7 },
-    { time: "2020-10-29T00:22:15.742Z", val: 15 },
-    { time: "2020-10-29T00:00:28.198Z", val: 12 },
-    { time: "2020-10-29T00:47:42.282Z", val: 23 },
-    { time: "2020-10-29T00:38:57.798Z", val: 19 },
-    { time: "2020-10-29T00:07:01.130Z", val: 19 },
-    { time: "2020-10-29T00:05:31.092Z", val: 8 },
-    { time: "2020-10-29T00:47:26.021Z", val: 10 },
-    { time: "2020-10-29T00:38:24.590Z", val: 25 },
-    { time: "2020-10-29T00:13:53.737Z", val: 10 },
-    { time: "2020-10-29T00:54:56.662Z", val: 7 },
-    { time: "2020-10-29T00:56:27.843Z", val: 10 },
-    { time: "2020-10-29T00:26:09.775Z", val: 18 },
-    { time: "2020-10-29T00:03:32.874Z", val: 19 },
-    { time: "2020-10-29T00:33:18.165Z", val: 24 },
-    { time: "2020-10-29T00:12:22.762Z", val: 17 },
-    { time: "2020-10-29T00:11:54.368Z", val: 18 },
-    { time: "2020-10-29T00:01:57.869Z", val: 24 },
-    { time: "2020-10-29T00:49:28.721Z", val: 24 },
-    { time: "2020-10-29T00:36:31.733Z", val: 7 },
-    { time: "2020-10-29T00:58:19.009Z", val: 18 },
-    { time: "2020-10-29T00:00:55.483Z", val: 20 },
-    { time: "2020-10-29T00:34:08.795Z", val: 16 },
-    { time: "2020-10-29T00:30:27.200Z", val: 18 },
-    { time: "2020-10-29T00:47:49.359Z", val: 16 },
-    { time: "2020-10-29T00:43:31.766Z", val: 7 },
-    { time: "2020-10-29T00:13:49.771Z", val: 12 },
-    { time: "2020-10-29T00:53:27.715Z", val: 9 }
-]
+//   const LineSample = () => {
+//     const [skill, setSkill] = useState([])
+//     useEffect(() => {
+//         database.ref('UserA')
+//           .orderByKey()
+//           .limitToLast(10)
+//           .on("value", (snapshot) => {
+//             const messages = snapshot.val()
+//             if (messages === null) return
+//             const entries = Object.entries(messages)
+//             const newMessages = entries.map((data) => {
+//               const [key, message] = data
+//               return { key, ...message }
+//             })
+//             setSkill(newMessages)
+//           })
+//       }, [])
+//     console.log(skill)
 
-  const LineSample = () => {
-    const [skill, setSkill] = useState([])
-    useEffect(() => {
-        database.ref('UserA')
-          .orderByKey()
-          .limitToLast(10)
-          .on("value", (snapshot) => {
-            const messages = snapshot.val()
-            if (messages === null) return
-            const entries = Object.entries(messages)
-            const newMessages = entries.map((data) => {
-              const [key, message] = data
-              return { key, ...message }
-            })
-            setSkill(newMessages)
-          })
-      }, [])
-    console.log(skill)
-    const convert = (data) => {
-        const result = data.map((d) => {
-            return {
-                time: moment(d.time).format("YYYY-MM-DD HH:mm:ss"),
-                val: d.val
-            }
-        })
-        result.sort((a, b) => a.time < b.time ? -1 : 1)
-        return result
+export default function Visualize(){
+var graph = {
+    labels: [ "0", "1", "2", "3", "4" ],
+    datasets: [{
+       label: "Skill",
+       lineTension: 0,
+       backgroundColor: "rgba(255, 255, 255, 1)",
+       borderColor: "rgba(0, 0, 255, 1)",
+       borderCapStyle: 'round',
+       borderDash: [4, 10],
+       borderDashOffset: 1.0,
+       borderJoinStyle: "round",
+       pointBorderColor: "rgba(0, 0, 255, 1)",
+       pointBackgroundColor: "rgba(0, 0, 255, 1)",
+       pointBorderWidth: 4,
+       pointHoverRadius: 10,
+       pointHoverBackgroundColor: "rgba(0, 0, 255, 1)",
+       pointHoverBorderColor: "rgba(255, 240, 15, 1)",
+       pointHoverBorderWidth: 4,
+       pointRadius: 1,
+       pointHitRadius: 10,
+       fill: false,
+       spanGaps: false,
+       data: []
+    }],
+ };
+ var options = {
+    responsive: true,
+    title:{ display:true,
+       text:'Skill Log'
+    },
+    scales: {
+       xAxes: [{ display: true,
+          scaleLabel: { display: true, labelString: 'Grade' }
+       }],
+       yAxes: [{ display: true,
+          scaleLabel: { display: true, labelString: 'Skill' },
+          ticks: { min: 0, max: 100, stepSize: 20 }
+       }]
     }
-    return (
-        <LineChart
-            width={500}
-            height={300}
-            data={convert(data)}
-            margin={{
-                top: 30, right: 30, left: 20, bottom: 20,
-            }}
-        >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-                dataKey="time"
-                domain={["dataMin", "dataMax"]}
-                tickFormatter={(t) => moment(t).format("HH:mm:ss")}
-                label={{
-                    value: "日時", offset: -5, position: "insideBottomRight"
-                }}
-            />
-            < YAxis label={{ value: "スキル", angle: -90, position: "insideLeft" }} />
-            <Tooltip />
-            <Legend verticalAlign="bottom" />
-            <Line type="monotone" dataKey="val" name="ユーザ１" stroke="#8884d8" dot={false} />
-        </LineChart>
-    );
+ };
+ /********************* 任意の縦線を引く為の処理 ***********************/
+ var originalLineDraw = Chart.controllers.line.prototype.draw;
+ Chart.helpers.extend(Chart.controllers.line.prototype, {
+    draw: function(){
+       originalLineDraw.apply(this, arguments);
+       var chart = this.chart;
+       var ctx = chart.chart.ctx;
+       var index = chart.config.data.lineAtIndex;
+       if (index){
+          var xaxis = chart.scales['x-axis-0'];
+          var yaxis = chart.scales['y-axis-0'];
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(xaxis.getPixelForValue(undefined, index), yaxis.top);
+          ctx.strokeStyle = '#ff0000';
+          ctx.lineWidth = 1;
+          ctx.lineTo(xaxis.getPixelForValue(undefined, index), yaxis.bottom);
+          ctx.stroke();
+          ctx.restore();
+       }
+    }
+ });
+
+ window.addEventListener('DOMContentLoaded', function(){
+    Chart.plugins.register({
+       beforeDraw: function(c){
+          var ctx = c.chart.ctx;
+          ctx.fillStyle = "rgba(255, 255, 255, 1)";
+          ctx.fillRect(0, 0, c.chart.width, c.chart.height);
+       }
+    });
+    var canvas = document.getElementById("myChart");
+    // console.log(canvas)
+    var ctx = canvas.getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: graph,
+        options: options,
+    });
+    var data = [43, 36, 17, 28, 51];
+    data.forEach(function(e){
+       graph.datasets[0].data.push(e);
+    });
+    /*** ３番目に 縦線を引く ***/
+    graph.lineAtIndex = 3;
+
+    myChart.update();
+ });
+ return (
+    <div><canvas id="myChart"></canvas></div>
+   );
 }
-export default LineSample
