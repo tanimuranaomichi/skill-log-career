@@ -1,5 +1,5 @@
 // ログイン画面
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,17 +12,11 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import { auth } from '../firebase';
 
 const Login = () => {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
@@ -57,7 +51,7 @@ const Login = () => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                    <Box component="form" noValidate >
                         <TextField
                             margin="normal"
                             required
@@ -67,6 +61,7 @@ const Login = () => {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={(e) => setEmail((email) => (email = e.target.value))}
                         />
                         <TextField
                             margin="normal"
@@ -77,12 +72,18 @@ const Login = () => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={(e) => setPassword((password) => (password = e.target.value))}
                         />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                auth.signInWithEmailAndPassword(email, password)
+                            }}
+
                         >
                             Sign In
                         </Button>
@@ -94,7 +95,7 @@ const Login = () => {
                     </Box>
                 </Box>
             </Grid>
-        </Grid>
+        </Grid >
     );
 }
 
