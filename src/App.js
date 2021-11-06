@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, ThemeProvider, Drawer } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, ThemeProvider, Drawer, Button } from '@mui/material';
 import { GlobalStyles } from '@mui/material';
 import { List, ListItemButton, ListItemText } from '@mui/material';
 import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon } from '@mui/icons-material';
@@ -9,6 +9,7 @@ import { blue, green } from '@mui/material/colors';
 import Home from './screens/home';
 import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
+import { database } from './firebase';
 import Archivement from './screens/achievement';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -32,6 +33,38 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const [skill, setSkill] = useState([])
+  //const [data_key, setData_key] = useState([])
+  const DataRef = (name) => {
+    return new Promise((resolve, reject) => {
+      if (name !== "") {
+        database.ref(name).orderByKey().limitToLast(10).on("value", (snapshot) => {
+          const messages = snapshot.val()
+          if (messages === null) return
+          const entries = Object.entries(messages)
+          const newMessages = entries.map((data) => {
+            const [key, message] = data
+            return { key, ...message }
+          })
+          //setSkill(newMessages)
+          //console.log(newMessages[1])
+          //setData_key(Object.keys(newMessages[1]))
+          resolve(newMessages);
+        })
+      }
+      else {
+        reject();
+      }
+    });
+  };
+  async function asyncDataRef(name) {
+    var tempData = await DataRef(name);
+    //console.log(tempData);
+    setSkill(tempData);
+    return tempData;
+    //return tempData;
+  };
+  
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -41,7 +74,6 @@ const App = () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
 
   return (
     <>
@@ -62,6 +94,9 @@ const App = () => {
           </Typography>
         </Toolbar>
       </AppBar>
+
+      <Button variant="outlined" onClick={async () => { var data = await asyncDataRef("UserA"); console.log(data); console.log(data[1].a) }}>button</Button>
+
       <Drawer
         sx={{
           width: 240,

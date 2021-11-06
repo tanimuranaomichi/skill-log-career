@@ -1,5 +1,5 @@
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/database'
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/database';
 
 const {
     REACT_APP_FIREBASE_API_KEY,
@@ -9,7 +9,7 @@ const {
     REACT_APP_FIREBASE_STORAGE_BUCKET,
     REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
     REACT_APP_FIREBASE_APP_ID,
-} = process.env
+} = process.env;
 
 const firebaseConfig = {
     apiKey: REACT_APP_FIREBASE_API_KEY,
@@ -19,10 +19,10 @@ const firebaseConfig = {
     storageBucket: REACT_APP_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
     appId: REACT_APP_FIREBASE_APP_ID,
-}
+};
 
 firebase.initializeApp(firebaseConfig)
-const database = firebase.database()
+export const database = firebase.database()
 export const messagesRef = database.ref('UserA/achievement')
 
 export const pushAchievement = ({ date, eventName, result }) => {
