@@ -128,9 +128,6 @@ const App = () => {
             <ListItemButton component="a" href="/">
               <ListItemText primary="ホーム" />
             </ListItemButton>
-            <ListItemButton component="a" href="/login">
-              <ListItemText primary="ログイン" />
-            </ListItemButton>
             <ListItemButton component="a" onClick={handleLogout} href="/login">
               <ListItemText primary="ログアウト" />
             </ListItemButton>
