@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { MenuItem } from '@mui/material';
 import { auth } from "../firebase"
+import { useHistory } from 'react-router-dom';
 
 const getStringFromDate = (date) => {
     let year_str = date.getFullYear();
@@ -44,12 +45,19 @@ const grades = [
 ];
 
 export default function SignUp() {
+    const history = useHistory();
     const [lastName, setLastName] = useState();
     const [firstName, setFirstName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [grade, setGrade] = React.useState('B1');
     const registrationDate = new Date();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await auth.createUserWithEmailAndPassword(email, password);
+        history.push('/');
+    }
 
     return (
         <Container component="main" maxWidth="xs">

@@ -13,10 +13,18 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { auth } from '../firebase';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
+    const history = useHistory();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await auth.signInWithEmailAndPassword(email, password);
+        history.push('/');
+    };
 
     return (
         <Grid container component="main" sx={{ height: '100vh' }}>
@@ -79,11 +87,7 @@ const Login = () => {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                auth.signInWithEmailAndPassword(email, password)
-                            }}
-
+                            onClick={handleSubmit}
                         >
                             Sign In
                         </Button>
