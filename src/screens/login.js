@@ -62,7 +62,7 @@ const Login = () => {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        ログイン
                     </Typography>
                     {error && <Typography color="error">
                         {error}
@@ -73,7 +73,7 @@ const Login = () => {
                             required
                             fullWidth
                             id="email"
-                            label="Email Address"
+                            label="メールアドレス"
                             name="email"
                             autoComplete="email"
                             autoFocus
@@ -84,7 +84,7 @@ const Login = () => {
                             required
                             fullWidth
                             name="password"
-                            label="Password"
+                            label="パスワード"
                             type="password"
                             id="password"
                             autoComplete="current-password"
@@ -97,11 +97,11 @@ const Login = () => {
                             sx={{ mt: 3, mb: 2 }}
                             onClick={handleSubmit}
                         >
-                            Sign In
+                            ログイン
                         </Button>
                         <Box textAlign="right">
                             <Link href="/signup" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                                アカウントをお持ちでない場合は登録
                             </Link>
                         </Box>
                     </Box>

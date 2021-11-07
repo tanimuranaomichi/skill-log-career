@@ -78,7 +78,7 @@ export default function SignUp() {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Sign up
+                    アカウント登録
                 </Typography>
                 {error && <Typography color="error">
                     {error}
@@ -155,11 +155,11 @@ export default function SignUp() {
                         sx={{ mt: 3, mb: 2 }}
                         onClick={handleSubmit}
                     >
-                        Sign Up
+                        登録
                     </Button>
                     <Box textAlign="right">
                         <Link href="/login" variant="body2">
-                            Already have an account? Sign in
+                            アカウントをお持ちの場合はログイン
                         </Link>
                     </Box>
 
