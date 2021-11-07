@@ -19,11 +19,16 @@ const Login = () => {
     const history = useHistory();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [error, setError] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await auth.signInWithEmailAndPassword(email, password);
-        history.push('/');
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            history.push('/');
+        } catch (error) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -59,6 +64,9 @@ const Login = () => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
+                    {error && <Typography color="error">
+                        {error}
+                    </Typography>}
                     <Box component="form" noValidate >
                         <TextField
                             margin="normal"

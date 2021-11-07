@@ -51,12 +51,17 @@ export default function SignUp() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [grade, setGrade] = React.useState('B1');
+    const [error, setError] = useState('');
     const registrationDate = new Date();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        await auth.createUserWithEmailAndPassword(email, password);
-        history.push('/');
+        try {
+            await auth.createUserWithEmailAndPassword(email, password);
+            history.push('/');
+        } catch (error) {
+            setError(error.message);
+        }
     }
 
     return (
@@ -75,6 +80,9 @@ export default function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
+                {error && <Typography color="error">
+                    {error}
+                </Typography>}
                 <Box component="form" noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
@@ -145,10 +153,7 @@ export default function SignUp() {
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            auth.createUserWithEmailAndPassword(email, password)
-                        }}
+                        onClick={handleSubmit}
                     >
                         Sign Up
                     </Button>
