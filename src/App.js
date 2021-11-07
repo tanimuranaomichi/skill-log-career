@@ -14,6 +14,7 @@ import Archivement from './screens/achievement';
 import Signup from './screens/signup';
 import { AuthProvider } from './context/authContext';
 import PrivateRoute from './components/privateRoute';
+import PublicRoute from './components/publicRoute';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -143,8 +144,8 @@ const App = () => {
         </Drawer>
         <BrowserRouter>
           <Switch>
-            <Route path='/signup' component={Signup} />
-            <Route path='/login' component={Login} />
+            <PublicRoute path='/signup' component={Signup} />
+            <PublicRoute path='/login' component={Login} />
             <PrivateRoute path='/questionnaire' component={Questionnaire} />
             <PrivateRoute path='/achievement' component={Archivement} />
             <PrivateRoute path='/' component={Home} />
