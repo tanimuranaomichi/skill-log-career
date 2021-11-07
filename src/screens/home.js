@@ -48,15 +48,16 @@ const Home = () => {
         });
     };
     async function asyncRef(name) {
-        var name_skill = name + "skill-data"
+        var name_skill = name + "skill-data";
         var tempskillData = await DataRef(name_skill);
         console.log(tempskillData);
         setSkill(tempskillData);
 
-        var name_achieve = name + "achievement"
+        var name_achieve = name + "achievement";
         var tempachieveData = await DataRef(name_achieve);
         console.log(tempachieveData);
-        setAchievement(tempachieveData)
+        setAchievement(tempachieveData);
+        return tempachieveData;
     };
     useEffect(() => {
         database.ref("Enterprise").orderByKey().limitToLast(10).on("value", (snapshot) => {
@@ -167,7 +168,7 @@ const Home = () => {
     }
     return (
         <div>
-            {/* <Button variant="outlined" onClick={async () => { var data = await asyncRef("UserA/"); console.log(data); console.log(data[1].skill) }}>button</Button> */}
+            <Button variant="outlined" onClick={async () => { await asyncRef("UserA/"); }}>button</Button>
             <h1>グラフ</h1>
             <LineChart
                 width={500}
