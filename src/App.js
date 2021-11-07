@@ -9,8 +9,12 @@ import { blue, green } from '@mui/material/colors';
 import Home from './screens/home';
 import Login from './screens/login';
 import Questionnaire from './screens/questionnaire';
-import { database } from './firebase';
+import { auth, database } from './firebase';
 import Archivement from './screens/achievement';
+import Signup from './screens/signup';
+import { AuthProvider } from './context/authContext';
+import PrivateRoute from './components/privateRoute';
+import PublicRoute from './components/publicRoute';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -33,6 +37,9 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const handleLogout = () => {
+    auth.signOut();
+  };
   const [skill, setSkill] = useState([])
   //const [data_key, setData_key] = useState([])
   const DataRef = (name) => {
@@ -64,7 +71,7 @@ const App = () => {
     return tempData;
     //return tempData;
   };
-  
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -77,68 +84,71 @@ const App = () => {
 
   return (
     <>
-      <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
-      <ThemeProvider theme={theme} />
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={handleDrawerOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6">
-            Skill Log Career
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <AuthProvider>
+        <GlobalStyles styles={{ body: { margin: 0, padding: 0 } }} />
+        <ThemeProvider theme={theme} />
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={handleDrawerOpen}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6">
+              Skill Log Career
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-      <Button variant="outlined" onClick={async () => { var data = await asyncDataRef("UserA"); console.log(data); console.log(data[1].a) }}>button</Button>
+        <Button variant="outlined" onClick={async () => { var data = await asyncDataRef("UserA"); console.log(data); console.log(data[1].a) }}>button</Button>
 
-      <Drawer
-        sx={{
-          width: 240,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+        <Drawer
+          sx={{
             width: 240,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </DrawerHeader>
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: 240,
+              boxSizing: 'border-box',
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </DrawerHeader>
 
-        <List>
-          <ListItemButton component="a" href="/">
-            <ListItemText primary="ホーム" />
-          </ListItemButton>
-          <ListItemButton component="a" href="/login">
-            <ListItemText primary="ログイン" />
-          </ListItemButton>
-          <ListItemButton component="a" href="/questionnaire">
-            <ListItemText primary="アンケート" />
-          </ListItemButton>
-          <ListItemButton component="a" href="/achievement">
-            <ListItemText primary="実績" />
-          </ListItemButton>
-        </List>
-      </Drawer>
-      <BrowserRouter>
-        <Switch>
-          <Route path='/login' component={Login} />
-          <Route path='/questionnaire' component={Questionnaire} />
-          <Route path='/achievement' component={Archivement} />
-          <Route path='/' component={Home} />
-        </Switch>
-      </BrowserRouter>
+          <List>
+            <ListItemButton component="a" href="/">
+              <ListItemText primary="ホーム" />
+            </ListItemButton>
+            <ListItemButton component="a" onClick={handleLogout} href="/login">
+              <ListItemText primary="ログアウト" />
+            </ListItemButton>
+            <ListItemButton component="a" href="/questionnaire">
+              <ListItemText primary="アンケート" />
+            </ListItemButton>
+            <ListItemButton component="a" href="/achievement">
+              <ListItemText primary="実績" />
+            </ListItemButton>
+          </List>
+        </Drawer>
+        <BrowserRouter>
+          <Switch>
+            <PublicRoute path='/signup' component={Signup} />
+            <PublicRoute path='/login' component={Login} />
+            <PrivateRoute path='/questionnaire' component={Questionnaire} />
+            <PrivateRoute path='/achievement' component={Archivement} />
+            <PrivateRoute path='/' component={Home} />
+          </Switch>
+        </BrowserRouter>
+      </AuthProvider>
     </>
   );
 }
