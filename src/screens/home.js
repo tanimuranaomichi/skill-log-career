@@ -15,7 +15,6 @@ const Home = () => {
 
     const search = () => {
         const searchword = "Enterprise/" + select;
-        console.log(searchword);
         database.ref(searchword).orderByKey().limitToLast(10).on("value", (snapshot) => {
             const result = snapshot.val()
             if (result === null) return
@@ -24,7 +23,6 @@ const Home = () => {
                 const [key, message] = data
                 return { key, ...message }
             })
-            console.log(newResult)
             setSearchResult(newResult)
         })
     }
@@ -47,18 +45,18 @@ const Home = () => {
             }
         });
     };
-    async function asyncRef(name) {
+    async function asyncRefSkill(name) {
         var name_skill = name + "skill-data";
         var tempskillData = await DataRef(name_skill);
-        console.log(tempskillData);
         setSkill(tempskillData);
-
+        return tempskillData;
+    };
+    async function asyncRefAchieve(name) {
         var name_achieve = name + "achievement";
         var tempachieveData = await DataRef(name_achieve);
-        console.log(tempachieveData);
         setAchievement(tempachieveData);
         return tempachieveData;
-    };
+    }
     useEffect(() => {
         database.ref("Enterprise").orderByKey().limitToLast(10).on("value", (snapshot) => {
             const EnterPrise = snapshot.val()
@@ -68,7 +66,6 @@ const Home = () => {
                 const [key, message] = data
                 return { key, ...message }
             })
-            console.log(newEnterPrise)
             setEnterPrise(newEnterPrise)
         });
         //asyncRef("UserA")
@@ -78,6 +75,12 @@ const Home = () => {
         // })();
     }, [])
 
+    useEffect(() => {
+        var skillData = asyncRefSkill("UserA/");
+        var achieveData = asyncRefAchieve("UserA/");
+        console.log(skillData);
+        console.log(achieveData);
+    }, []);
     const handleChange = (event) => {
         setSelect(event.target.value);
         console.log(select)
@@ -136,31 +139,31 @@ const Home = () => {
         { time: "2020-10-29T00:53:27.715Z", val: 9 }
     ]
 
-    const LineSample = () => {
-        const [skill, setSkill] = useState([])
-        useEffect(() => {
-            database.ref('UserA')
-                .orderByKey()
-                .limitToLast(10)
-                .on("value", (snapshot) => {
-                    const messages = snapshot.val()
-                    if (messages === null) return
-                    const entries = Object.entries(messages)
-                    const newMessages = entries.map((data) => {
-                        const [key, message] = data
-                        return { key, ...message }
-                    })
-                    setSkill(newMessages)
-                })
-        }, [])
-        console.log(skill)
-    }
+    // const LineSample = () => {
+    //     const [skill, setSkill] = useState([])
+    // useEffect(() => {
+    //     database.ref('UserA')
+    //         .orderByKey()
+    //         .limitToLast(10)
+    //         .on("value", (snapshot) => {
+    //             const messages = snapshot.val()
+    //             if (messages === null) return
+    //             const entries = Object.entries(messages)
+    //             const newMessages = entries.map((data) => {
+    //                 const [key, message] = data
+    //                 return { key, ...message }
+    //             })
+    //             setSkill(newMessages)
+    //         })
+    // }, [])
+    // console.log(skill)
+    // }
 
-    const convert = (data) => {
-        const result = data.map((d) => {
+    const convert = (skill) => {
+        const result = skill.map((d) => {
             return {
-                time: moment(d.time).format("YYYY-MM-DD HH:mm:ss"),
-                val: d.val
+                time: moment(d.date).format("YYYY-MM-DD HH:mm:ss"),
+                val: d.skill
             }
         })
         result.sort((a, b) => a.time < b.time ? -1 : 1)
@@ -168,12 +171,12 @@ const Home = () => {
     }
     return (
         <div>
-            <Button variant="outlined" onClick={async () => { await asyncRef("UserA/"); }}>button</Button>
+            <Button variant="outlined" onClick={async () => { await asyncRefSkill("UserA/"); }}>button</Button>
             <h1>グラフ</h1>
             <LineChart
                 width={500}
                 height={300}
-                data={convert(data)}
+                data={convert(skill)}
                 margin={{
                     top: 30, right: 30, left: 20, bottom: 20,
                 }}
@@ -211,15 +214,15 @@ const Home = () => {
                 </Select>
             </FormControl>
             <Button variant="outlined" onClick={() => { search() }}>button</Button>
-            {searchResult.map((s) => (
+            {/* {searchResult.map((s) => (
                 <div key={s.key}>{s.name}</div>
             ))}
             {skill.map((s) => (
                 <div key={s.key}>{s.date}:{s.skill}</div>
             ))}
             {achievement.map((a) => (
-                <div key={a.key}>{a.result}</div>
-            ))}
+                <div key={a.key}>{a.date}:{a.result}</div>
+            ))} */}
         </div>
     );
 }

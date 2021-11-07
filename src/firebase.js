@@ -29,4 +29,3 @@ export const messagesRef = database.ref('UserA/achievement')
 export const pushAchievement = ({ date, eventName, result }) => {
     messagesRef.push({ date, eventName, result })
 }
-
