@@ -5,6 +5,7 @@ import './home.css'
 import { database } from '../firebase';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, } from 'recharts';
 import moment from 'moment';
+import { MarkunreadOutlined } from '@mui/icons-material';
 
 const Home = () => {
     const [enterPrise, setEnterPrise] = useState([])
@@ -203,7 +204,7 @@ const Home = () => {
                     value={select}
                     onChange={handleChange}
                     autoWidth
-                    label="select enterprise"
+                    label="search"
                 >
                     <MenuItem value="">
                         <em>None</em>
